@@ -1,5 +1,6 @@
 # Terraform working directories
 **/.terraform/*
+.terraform/
 
 # Terraform state and backups
 *.tfstate
@@ -35,3 +36,5 @@ terraform.rc
 .env
 .env.*
 !.env.example
+
+backend.s3.hcl
