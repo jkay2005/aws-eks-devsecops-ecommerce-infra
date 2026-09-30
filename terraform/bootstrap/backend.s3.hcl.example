@@ -1,6 +1,6 @@
-bucket              = "ecommerce-tfstate-719463828127-ap-southeast-1"
+bucket              = "ecommerce-tfstate-ACCOUNT_ID-ap-southeast-1"
 key                 = "bootstrap/terraform.tfstate"
 region              = "ap-southeast-1"
 encrypt             = true
 use_lockfile        = true
-allowed_account_ids = ["719463828127"]
+allowed_account_ids = ["ACCOUNT_ID"]
