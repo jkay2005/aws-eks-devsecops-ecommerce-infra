@@ -1,0 +1,115 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadNetworkInSingapore",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeInternetGateways",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeNetworkAcls",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "ap-southeast-1"
+        }
+      }
+    },
+    {
+      "Sid": "CreateTaggedNetworkResources",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpc",
+        "ec2:CreateSubnet",
+        "ec2:CreateRouteTable",
+        "ec2:CreateInternetGateway"
+      ],
+      "Resource": [
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:vpc/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:subnet/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:route-table/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:internet-gateway/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestTag/Project": "aws-eks-devsecops-ecommerce",
+          "aws:RequestTag/Environment": "dev"
+        }
+      }
+    },
+    {
+      "Sid": "CreateChildrenInsideProjectVpc",
+      "Effect": "Allow",
+      "Action": ["ec2:CreateSubnet", "ec2:CreateRouteTable"],
+      "Resource": "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:vpc/*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:ResourceTag/Project": "aws-eks-devsecops-ecommerce",
+          "ec2:ResourceTag/Environment": "dev"
+        }
+      }
+    },
+    {
+      "Sid": "TagNetworkOnCreation",
+      "Effect": "Allow",
+      "Action": "ec2:CreateTags",
+      "Resource": [
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:vpc/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:subnet/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:route-table/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:internet-gateway/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "ec2:CreateAction": [
+            "CreateVpc",
+            "CreateSubnet",
+            "CreateRouteTable",
+            "CreateInternetGateway"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "ManageExistingProjectNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:ModifyVpcAttribute",
+        "ec2:ModifySubnetAttribute",
+        "ec2:DeleteVpc",
+        "ec2:DeleteSubnet",
+        "ec2:DeleteRouteTable",
+        "ec2:DeleteInternetGateway",
+        "ec2:AttachInternetGateway",
+        "ec2:DetachInternetGateway",
+        "ec2:CreateRoute",
+        "ec2:ReplaceRoute",
+        "ec2:DeleteRoute",
+        "ec2:AssociateRouteTable",
+        "ec2:DisassociateRouteTable",
+        "ec2:ReplaceRouteTableAssociation",
+        "ec2:CreateTags",
+        "ec2:DeleteTags"
+      ],
+      "Resource": [
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:vpc/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:subnet/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:route-table/*",
+        "arn:aws:ec2:ap-southeast-1:ACCOUNT_ID:internet-gateway/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "ec2:ResourceTag/Project": "aws-eks-devsecops-ecommerce",
+          "ec2:ResourceTag/Environment": "dev"
+        }
+      }
+    }
+  ]
+}
