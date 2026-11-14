@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CreateTaggedBackendRepository",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:CreateRepository"
+      ],
+      "Resource": "arn:aws:ecr:ap-southeast-1:ACCOUNT_ID:repository/aws-eks-devsecops-ecommerce/backend",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestTag/Project": "aws-eks-devsecops-ecommerce",
+          "aws:RequestTag/Environment": "dev"
+        }
+      }
+    },
+    {
+      "Sid": "ManageBackendRepository",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:DescribeRepositories",
+        "ecr:ListTagsForResource",
+        "ecr:TagResource",
+        "ecr:UntagResource",
+        "ecr:PutImageTagMutability",
+        "ecr:DeleteRepository"
+      ],
+      "Resource": "arn:aws:ecr:ap-southeast-1:ACCOUNT_ID:repository/aws-eks-devsecops-ecommerce/backend"
+    }
+  ]
+}
